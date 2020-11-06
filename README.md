@@ -25,5 +25,8 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
       • https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73
       • http://www.paramiko.org/
       • https://www.youtube.com/watch?v=kvPa85M9z2Q&ab_channel=TheIPSchool
+####  Python for Telnet connection :</br>      
+      • https://youtu.be/IhroIrV9_7w
+      • https://docs.python.org/3.1/library/telnetlib.html
 #### Pytest :</br>      
       • https://docs.pytest.org/en/stable/

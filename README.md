@@ -13,15 +13,14 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
 •	Functional based style</br>
 •	Should contain unit tests – pytest should be used</br>
 •	Should pass pylint and black (optional)</br>
-</hr>
 
-#### Useful info :
+### Useful info :
 #### Netbox :</br>
       • Netbox documentation https://netbox.readthedocs.io/en/stable/
       • What is a netbox and how to use netboxdemo https://packetpushers.net/netbox-demo-site-netboxdemo-com/
       • Netbox features https://youtu.be/X1BXS5N21TM
       • Netbox review https://youtu.be/-pdTU_9wCAg
-        Netbox API https://netboxdemo.com/api/docs/ (naybe to use in order to filter the devices by status and model. Look for "Device" )
+      • Netbox API https://netboxdemo.com/api/docs/ (naybe to use in order to filter the devices by status and model. Look for "Device" )
 ####  Python Paramika module for SSH connection :</br>
       • https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73
       • http://www.paramiko.org/

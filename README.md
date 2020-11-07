@@ -22,6 +22,7 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
       • What is a netbox and how to use netboxdemo https://packetpushers.net/netbox-demo-site-netboxdemo-com/
       • Netbox features https://youtu.be/X1BXS5N21TM
       • Netbox review https://youtu.be/-pdTU_9wCAg
+      • Netboxdemo login and password : netbox,netbox
 #### Netbox API :</br>
       • Netbox API documentation https://netboxdemo.com/api/docs/
       • Probable API to use https://netboxdemo.com/api/dcim/devices/

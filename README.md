@@ -14,7 +14,7 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
 •	Should contain unit tests – pytest should be used</br>
 •	Should pass pylint and black (optional)</br>
 
-### Useful info :
+### Useful info that I found :
 #### Netbox :</br>
       • Netbox documentation https://netbox.readthedocs.io/en/stable/
       • What is a netbox and how to use netboxdemo https://packetpushers.net/netbox-demo-site-netboxdemo-com/

@@ -23,6 +23,7 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
 #### Netbox API :</br>
       • Netbox API documentation https://netboxdemo.com/api/docs/
       • Probable API to use https://netboxdemo.com/api/dcim/devices/
+      • ![API](https://user-images.githubusercontent.com/55871427/98450154-fbbda500-2142-11eb-88f8-6b7438432217.JPG)
       • API access token '72830d67beff4ae178b94d8f781842408df8069d'
       
 ####  Python Paramika module for SSH connection :</br>

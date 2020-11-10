@@ -13,7 +13,7 @@ headers = {
 
 def create_new_device():
     data = {
-        "name": "test_device_6",
+        "name": "test_device_50",
         "device_type": 4,
         "device_role": {"name": "Core Switch"},
         "tenant": {"name": "NOC"},
@@ -83,6 +83,25 @@ def get_device_info():
             print("Device IPv4: " + str(device_ipv6))
     else:
         print("Something went wrong! Try again :(")
+
+
+def update_custom_field():
+    #import requests
+    #import json
+    # API url for all devices
+    # headers = {
+    # 'Content-Type': 'application/json',
+    # 'Authorization': 'Token 72830d67beff4ae178b94d8f781842408df8069d'
+    # }
+    id = 34
+    url_device = 'https://netboxdemo.com/api/dcim/devices/'+str(id)+'/'
+    payload = {
+        "custom_fields": "sw_version"
+    }
+    data = json.dumps(payload)
+
+    r = requests.patch(url_device, headers=headers, data=data)
+    print(r.status_code)
 
 
 create_new_device()

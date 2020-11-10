@@ -18,3 +18,5 @@ tn.write(password+b"\n")
 tn.write("show version"+b"\n")
 
 print(tn.read_all().decode('ascii'))
+
+qweqweqweqw

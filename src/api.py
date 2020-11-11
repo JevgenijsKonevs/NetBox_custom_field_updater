@@ -1,19 +1,64 @@
 import requests
 import json
-# API url with parameters tenant = noc and status = active
-api_url = 'https://netboxdemo.com/api/dcim/devices/?tenant=noc&status=active'
-# API url for all devices
-url = 'https://netboxdemo.com/api/dcim/devices/'
-# Access token + content type
+# API url
+api_url = 'https://netboxdemo.com/api/'
+# Tenant Group url
+tenant_group_url = api_url+"tenancy/tenant-groups/"
+# Tenant url
+tenant_url = api_url+"tenancy/tenants/"
+# Status = Active, Tenant = NOC url
+param_url = api_url+"dcim/devices/?tenant=noc&status=active"
+# Authorization header
 headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Token 72830d67beff4ae178b94d8f781842408df8069d'
 }
 
 
+def create_tenant():
+    # Create Tenant Group NOC
+
+    data_tenant_group = {
+        "name": "NOC",
+        "slug": "noc",
+        "parent": None,
+        "description": "NOC"
+    }
+    response = requests.post(tenant_group_url, headers=headers,
+                             json=data_tenant_group)
+    print("Creating new Tenant Group....")
+    if response.status_code == 201:
+        print("Tenant Group was sucessfully created!")
+    else:
+        print("Something went wrong! Try again :(")
+        print(response.text)
+
+    # Create Tenant NOC
+    data_tenant = {
+        "name": "NOC",
+        "slug": "noc",
+        "group": {"name": "NOC"},
+        "description": "NOC",
+        "comments": "",
+        "tags": [
+            "noc"
+        ],
+        "custom_fields": {
+        }
+    }
+ # Send POST request to API
+    print("Creating new Tenant....")
+    response = requests.post(tenant_url, headers=headers, json=data_tenant)
+    if response.status_code == 201:
+        print("Tenant was sucessfully created!")
+    else:
+        print("Something went wrong! Try again :(")
+        print(response.text)
+
+
 def create_new_device():
     data = {
-        "name": "test_device_50",
+        "name": "test_device_51",
         "device_type": 4,
         "device_role": {"name": "Core Switch"},
         "tenant": {"name": "NOC"},
@@ -51,11 +96,12 @@ def create_new_device():
         print("Device was sucessfully created!")
     else:
         print("Something went wrong! Try again :(")
+        print(response.text)
 
 
 def get_device_info():
     # Send GET request to API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(param_url, headers=headers)
     if response.status_code == 200:
         json_data = response.json()
         results = json_data['results']
@@ -83,16 +129,14 @@ def get_device_info():
             print("Device IPv4: " + str(device_ipv6))
     else:
         print("Something went wrong! Try again :(")
+        print(response.text)
+
+
+def get_device_sw_version():
+    pass
 
 
 def update_custom_field():
-    #import requests
-    #import json
-    # API url for all devices
-    # headers = {
-    # 'Content-Type': 'application/json',
-    # 'Authorization': 'Token 72830d67beff4ae178b94d8f781842408df8069d'
-    # }
     id = 34
     url_device = 'https://netboxdemo.com/api/dcim/devices/'+str(id)+'/'
     payload = {
@@ -104,5 +148,7 @@ def update_custom_field():
     print(r.status_code)
 
 
+create_tenant()
 create_new_device()
 get_device_info()
+update_custom_field()

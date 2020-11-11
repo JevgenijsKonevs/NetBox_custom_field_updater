@@ -6,6 +6,8 @@ api_url = 'https://netboxdemo.com/api/'
 tenant_group_url = api_url+"tenancy/tenant-groups/"
 # Tenant url
 tenant_url = api_url+"tenancy/tenants/"
+# Device url
+device_url = 'https://netboxdemo.com/api/dcim/devices/'
 # Status = Active, Tenant = NOC url
 param_url = api_url+"dcim/devices/?tenant=noc&status=active"
 # Authorization header
@@ -30,7 +32,7 @@ def create_tenant():
     if response.status_code == 201:
         print("Tenant Group was sucessfully created!")
     else:
-        print("Something went wrong! Try again :(")
+        print("Tenant Group creation went wrong! Try again :(")
         print(response.text)
 
     # Create Tenant NOC
@@ -52,13 +54,14 @@ def create_tenant():
     if response.status_code == 201:
         print("Tenant was sucessfully created!")
     else:
-        print("Something went wrong! Try again :(")
+        print("Tenant creation went wrong! Try again :(")
         print(response.text)
 
 
 def create_new_device():
+
     data = {
-        "name": "test_device_51",
+        "name": "test_device_54",
         "device_type": 4,
         "device_role": {"name": "Core Switch"},
         "tenant": {"name": "NOC"},
@@ -90,12 +93,11 @@ def create_new_device():
     }
     # Send POST request to API
     print("Creating new device....")
-    response = requests.post(api_url, headers=headers, json=data)
-    print(response.status_code)
+    response = requests.post(device_url, headers=headers, json=data)
     if response.status_code == 201:
         print("Device was sucessfully created!")
     else:
-        print("Something went wrong! Try again :(")
+        print("New device creation went wrong! Try again :(")
         print(response.text)
 
 
@@ -104,19 +106,18 @@ def get_device_info():
     response = requests.get(param_url, headers=headers)
     if response.status_code == 200:
         json_data = response.json()
+        device_count = json_data['count']
         results = json_data['results']
-
-        for device in results:
-
+        for each_device in range(0, device_count):
             # getting device data from response
-            device_name = device['name']
-            device_display_name = device['device_type']['display_name']
-            device_status = device['status']['value']
-            device_rack_name = device['rack']['name']
-            device_primary_ip = device['primary_ip']['address']
-            device_ipv4 = device['primary_ip4']['address']
-            device_ipv6 = device['primary_ip6']
-            tenant = device['tenant']['name']
+            device_name = results[each_device]['name']
+            device_display_name = results[each_device]['device_type']['display_name']
+            device_status = results[each_device]['status']['value']
+            device_rack_name = results[each_device]['rack']['name']
+            device_primary_ip = results[each_device]['primary_ip']['address']
+            device_ipv4 = results[each_device]['primary_ip4']['address']
+            #device_ipv6 = results[each_device]['primary_ip6']
+            tenant = results[each_device]['tenant']['name']
 
             # printing the device data
             print("Device name: " + str(device_name))
@@ -126,10 +127,14 @@ def get_device_info():
             print("Rack: " + str(device_rack_name))
             print("Device primary IP: "+str(device_primary_ip))
             print("Device IPv4: " + str(device_ipv4))
-            print("Device IPv4: " + str(device_ipv6))
-    else:
-        print("Something went wrong! Try again :(")
-        print(response.text)
+            print("===========================================")
+            #print("Device IPv4: " + str(device_ipv6))
+        else:
+            print("Device info request went wrong! Try again :(")
+
+
+create_new_device()
+get_device_info()
 
 
 def get_device_sw_version():
@@ -148,7 +153,14 @@ def update_custom_field():
     print(r.status_code)
 
 
-create_tenant()
-create_new_device()
+# uncomment if there is no NOC tenant and tenant group created on netboxdemo
+# create_tenant()
+
+# uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
+# create_new_device()
+
+# getting device info, might be errors if no IP address assigned
 get_device_info()
-update_custom_field()
+
+# function is not working on netboxdemo due to lack of admin access
+# update_custom_field()

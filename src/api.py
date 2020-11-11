@@ -1,5 +1,7 @@
 import requests
 import json
+import getpass
+import telnetlib
 # API url
 api_url = 'https://netboxdemo.com/api/'
 # Tenant Group url
@@ -102,14 +104,19 @@ def create_new_device():
 
 
 def get_device_info():
+    # Creating empty arrays for ID and IP values from API
+    id_number = []
+    ip_number = []
     # Send GET request to API
     response = requests.get(param_url, headers=headers)
     if response.status_code == 200:
         json_data = response.json()
         device_count = json_data['count']
         results = json_data['results']
+
         for each_device in range(0, device_count):
             # getting device data from response
+            device_id = results[each_device]['id']
             device_name = results[each_device]['name']
             device_display_name = results[each_device]['device_type']['display_name']
             device_status = results[each_device]['status']['value']
@@ -119,7 +126,12 @@ def get_device_info():
             #device_ipv6 = results[each_device]['primary_ip6']
             tenant = results[each_device]['tenant']['name']
 
+            # Fulfilling the arrays with values
+            id_number.append(device_id)
+            ip_number.append(device_ipv4)
+
             # printing the device data
+            print("Device ID: " + str(device_id))
             print("Device name: " + str(device_name))
             print("Device display name: " + str(device_display_name))
             print("Device status: " + str(device_status))
@@ -129,19 +141,23 @@ def get_device_info():
             print("Device IPv4: " + str(device_ipv4))
             print("===========================================")
             #print("Device IPv4: " + str(device_ipv6))
-        else:
-            print("Device info request went wrong! Try again :(")
+    else:
+        print("Device info request went wrong! Try again :(")
 
-
-create_new_device()
-get_device_info()
+    # Creating the dictionary with key = ID and value = IP
+    device_dict = dict(zip(id_number, ip_number))
+    return device_dict
 
 
 def get_device_sw_version():
-    pass
+    device_dict = get_device_info()
+    hostname_list = list(device_dict.values())
+    for each_hostname in range(0, len(hostname_list)):
+        pass
 
 
 def update_custom_field():
+    response = requests.get(param_url, headers=headers)
     id = 34
     url_device = 'https://netboxdemo.com/api/dcim/devices/'+str(id)+'/'
     payload = {

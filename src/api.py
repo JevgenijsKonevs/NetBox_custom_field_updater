@@ -2,7 +2,7 @@ import requests
 import json
 import paramiko
 import os
-
+import re
 
 # API url
 api_url = 'https://netboxdemo.com/api/'
@@ -155,13 +155,13 @@ def get_device_info():
 
 
 def get_device_sw_version():
+    sw_version = []
+    # Accessing the variable from get_device_info
     device_dict = get_device_info()
+    # Getting the list of IP addresses
     hostname_list = list(device_dict.values())
+    # Counting the length of this list
     hostname_count = len(hostname_list)
-
-    hostname_test = ["195.144.107.198", "195.144.107.198",
-                     "195.144.107.198", "195.144.107.198"]
-    hostname_test_count = len(hostname_test)
     # Performing the connection to the devices
     for each_hostname in range(0, hostname_count):
         server_ip = hostname_list[each_hostname].format()
@@ -176,13 +176,24 @@ def get_device_sw_version():
             # Replace 'username', 'password' with actual values, if needed
             ssh.connect(server_ip, port=22,
                         username='demo', password='password')
-            # executing the command on the equipment to observer the software version
-            # stdin, stdout, stderr = ssh.exec_command('show version')
-            # store the output
-            # output = stdout.readLines()
+            # Executing the command on the equipment to observer the software version
+            stdin, stdout, stderr = ssh.exec_command('show version')
+            # Store the output
+            output = stdout.readLines()
             print("Successfully Connected!")
+            # Get the first string of the output
+            first_output_string = output.split('\n')[0]
+            # Locate and store the string value with version
+            software_version_value = ''.join(re.findall(
+                '\,\s*(Version.*)\,', first_output_string))
+            # Append the string value to sw_version list
+            sw_version.append(software_version_value)
         else:
             print("Equipment is unreachable! Can not setup the connection :(")
+    # Update device_dict values with sw_version. Example {"id1":"Version 1.0","id2":"Version 2.0"}
+    sw_output_dict = dict(zip(device_dict, sw_version))
+    # Returning the new dictionary
+    return sw_output_dict
 
 
 get_device_info()

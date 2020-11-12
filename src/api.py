@@ -1,7 +1,9 @@
 import requests
 import json
-import getpass
-import telnetlib
+import paramiko
+import os
+
+
 # API url
 api_url = 'https://netboxdemo.com/api/'
 # Tenant Group url
@@ -63,7 +65,7 @@ def create_tenant():
 def create_new_device():
 
     data = {
-        "name": "test_device_54",
+        "name": "test_device_55",
         "device_type": 4,
         "device_role": {"name": "Core Switch"},
         "tenant": {"name": "NOC"},
@@ -128,9 +130,11 @@ def get_device_info():
 
             # Fulfilling the arrays with values
             id_number.append(device_id)
-            ip_number.append(device_ipv4)
+            # Deleting mask from IP address
+            device_ipv4_nomask = "/".join(device_ipv4.split("/")[:-1])
+            ip_number.append(device_ipv4_nomask)
 
-            # printing the device data
+            # Printing the device data
             print("Device ID: " + str(device_id))
             print("Device name: " + str(device_name))
             print("Device display name: " + str(device_display_name))
@@ -146,14 +150,43 @@ def get_device_info():
 
     # Creating the dictionary with key = ID and value = IP
     device_dict = dict(zip(id_number, ip_number))
+    print(device_dict)
     return device_dict
 
 
 def get_device_sw_version():
     device_dict = get_device_info()
     hostname_list = list(device_dict.values())
-    for each_hostname in range(0, len(hostname_list)):
-        pass
+    hostname_count = len(hostname_list)
+
+    hostname_test = ["195.144.107.198", "195.144.107.198",
+                     "195.144.107.198", "195.144.107.198"]
+    hostname_test_count = len(hostname_test)
+    # Performing the connection to the devices
+    for each_hostname in range(0, hostname_count):
+        server_ip = hostname_list[each_hostname].format()
+        # Checking if the equipment is reachable (with ping)
+        rep = os.system('ping ' + server_ip)
+        if rep == 0:
+            print("Equipment is reachable! Performing the connection....")
+            # Setup a connection
+            ssh = paramiko.SSHClient()
+            # Fixing the problem with the known_hosts. Automatically add it
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            # Replace 'username', 'password' with actual values, if needed
+            ssh.connect(server_ip, port=22,
+                        username='demo', password='password')
+            # executing the command on the equipment to observer the software version
+            # stdin, stdout, stderr = ssh.exec_command('show version')
+            # store the output
+            # output = stdout.readLines()
+            print("Successfully Connected!")
+        else:
+            print("Equipment is unreachable! Can not setup the connection :(")
+
+
+get_device_info()
+get_device_sw_version()
 
 
 def update_custom_field():

@@ -65,7 +65,7 @@ def create_tenant():
 def create_new_device():
 
     data = {
-        "name": "test_device_55",
+        "name": "test_device_52",
         "device_type": 4,
         "device_role": {"name": "Core Switch"},
         "tenant": {"name": "NOC"},
@@ -150,12 +150,13 @@ def get_device_info():
 
     # Creating the dictionary with key = ID and value = IP
     device_dict = dict(zip(id_number, ip_number))
-    print(device_dict)
+
     return device_dict
 
 
 def get_device_sw_version():
     sw_version = []
+    output = ""
     # Accessing the variable from get_device_info
     device_dict = get_device_info()
     # Getting the list of IP addresses
@@ -175,12 +176,13 @@ def get_device_sw_version():
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             # Replace 'username', 'password' with actual values, if needed
             ssh.connect(server_ip, port=22,
-                        username='demo', password='password')
+                        username='demo', password='password', allow_agent=False)
             # Executing the command on the equipment to observer the software version
             stdin, stdout, stderr = ssh.exec_command('show version')
-            # Store the output
-            output = stdout.readLines()
             print("Successfully Connected!")
+            # Get and store the output
+            for line in stdout:
+                output = output+line
             # Get the first string of the output
             first_output_string = output.split('\n')[0]
             # Locate and store the string value with version
@@ -230,4 +232,4 @@ get_device_info()
 # SSH connection to the equipment
 get_device_sw_version()
 # Updating the custom field on NetBox
-# update_custom_field()
+update_custom_field()

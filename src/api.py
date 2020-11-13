@@ -196,31 +196,38 @@ def get_device_sw_version():
     return sw_output_dict
 
 
-get_device_info()
-get_device_sw_version()
-
-
 def update_custom_field():
-    response = requests.get(param_url, headers=headers)
-    id = 34
-    url_device = 'https://netboxdemo.com/api/dcim/devices/'+str(id)+'/'
+    sw_output_dict = get_device_sw_version()
+    id_list = list(sw_output_dict.keys())
+    version_list = list(sw_output_dict.values())
     payload = {
-        "custom_fields": "sw_version"
+        "custom_fields": {}
     }
-    data = json.dumps(payload)
+    for each_id in range(0, len(id_list)):
+        new_device_url = device_url + str(id_list[each_id])+'/'
+        for each_version in range(0, len(version_list)):
+            payload = {
+                "custom_fields": {"sw_version": str(version_list[each_version])}
+            }
+            data = json.dumps(payload)
+            response = requests.patch(
+                new_device_url, headers=headers, data=data)
+            if response.status_code == 204:
+                print("The software version was successfully added to NetBox!")
+            else:
+                print("Something went wrong! Can not add software version!")
+                print(response.text)
 
-    r = requests.patch(url_device, headers=headers, data=data)
-    print(r.status_code)
 
-
-# uncomment if there is no NOC tenant and tenant group created on netboxdemo
+# Uncomment if there is no NOC tenant and tenant group created on netboxdemo
 # create_tenant()
 
-# uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
+# Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
 # create_new_device()
 
-# getting device info, might be errors if no IP address assigned
+# Getting device info, might be errors if no IP address assigned
 get_device_info()
-
-# function is not working on netboxdemo due to lack of admin access
+# SSH connection to the equipment
+get_device_sw_version()
+# Updating the custom field on NetBox
 # update_custom_field()

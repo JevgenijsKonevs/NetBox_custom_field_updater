@@ -21,7 +21,7 @@ headers = {
 }
 
 
-def create_tenant():
+def create_tenant_group():
     # Create Tenant Group NOC
 
     data_tenant_group = {
@@ -39,6 +39,8 @@ def create_tenant():
         print("Tenant Group creation went wrong! Try again :(")
         print(response.text)
 
+
+def create_tenant():
     # Create Tenant NOC
     data_tenant = {
         "name": "NOC",
@@ -221,7 +223,10 @@ def update_custom_field():
                 print(response.text)
 
 
-# Uncomment if there is no NOC tenant and tenant group created on netboxdemo
+# Uncomment if there is no NOC tenant group created on netboxdemo
+# create_tenant_group()
+
+# Uncomment if there is no NOC tenant created on netboxdemo
 # create_tenant()
 
 # Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running

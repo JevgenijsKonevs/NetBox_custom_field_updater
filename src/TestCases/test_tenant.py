@@ -34,11 +34,10 @@ def test_tenant_headers():
         print("Creating new Tenant....")
         response = requests.post(tenant_url, headers=headers, json=data_tenant)
         assert response.headers["Content-Type"] == "application/json"
-        if response.status_code == 201:
-            print("Tenant was sucessfully created!")
-        else:
-            print("Tenant creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant creation went wrong! Try again :(\n"+response.text)
+        print("Tenant was sucessfully created!")
     create_tenant()
 
 
@@ -60,11 +59,10 @@ def test_tenant_creation_one():
         print("Creating new Tenant....")
         response = requests.post(tenant_url, headers=headers, json=data_tenant)
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant was sucessfully created!")
-        else:
-            print("Tenant creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant creation went wrong! Try again :(\n"+response.text)
+        print("Tenant was sucessfully created!")
     create_tenant()
 
 
@@ -86,11 +84,10 @@ def test_tenant_creation_two():
         print("Creating new Tenant....")
         response = requests.post(tenant_url, headers=headers, json=data_tenant)
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant was sucessfully created!")
-        else:
-            print("Tenant creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant creation went wrong! Try again :(\n"+response.text)
+        print("Tenant was sucessfully created!")
     create_tenant()
 
 
@@ -112,11 +109,10 @@ def test_tenant_creation_three():
         print("Creating new Tenant....")
         response = requests.post(tenant_url, headers=headers, json=data_tenant)
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant was sucessfully created!")
-        else:
-            print("Tenant creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant creation went wrong! Try again :(\n"+response.text)
+        print("Tenant was sucessfully created!")
     create_tenant()
 
 
@@ -138,9 +134,8 @@ def test_tenant_creation_four():
         print("Creating new Tenant....")
         response = requests.post(tenant_url, headers=headers, json=data_tenant)
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant was sucessfully created!")
-        else:
-            print("Tenant creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant creation went wrong! Try again :(\n"+response.text)
+        print("Tenant was sucessfully created!")
     create_tenant()

@@ -28,11 +28,10 @@ def test_tenant_url():
                                  json=data_tenant_group)
         print("Creating new Tenant Group....")
         assert tenant_group_url == 'https://netboxdemo.com/api/tenancy/tenant-groups/'
-        if response.status_code == 201:
-            print("Tenant Group was sucessfully created!")
-        else:
-            print("Tenant Group creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant Group creation went wrong! Try again :(\n"+response.text)
+        print("Tenant Group was sucessfully created!")
     create_tenant_group()
 
 
@@ -50,11 +49,10 @@ def test_headers():
                                  json=data_tenant_group)
         print("Creating new Tenant Group....")
         assert response.headers["Content-Type"] == "application/json"
-        if response.status_code == 201:
-            print("Tenant Group was sucessfully created!")
-        else:
-            print("Tenant Group creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant Group creation went wrong! Try again :(\n"+response.text)
+        print("Tenant Group was sucessfully created!")
     create_tenant_group()
 
 
@@ -70,11 +68,10 @@ def test_create_first_tenant():
                                  json=data_tenant_group)
         print("Creating new Tenant Group....")
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant Group was sucessfully created!")
-        else:
-            print("Tenant Group creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant Group creation went wrong! Try again :(\n"+response.text)
+        print("Tenant Group was sucessfully created!")
     create_tenant_group()
 
 
@@ -90,11 +87,10 @@ def test_create_second_tenant():
                                  json=data_tenant_group)
         print("Creating new Tenant Group....")
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant Group was sucessfully created!")
-        else:
-            print("Tenant Group creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant Group creation went wrong! Try again :(\n"+response.text)
+        print("Tenant Group was sucessfully created!")
     create_tenant_group()
 
 
@@ -110,11 +106,10 @@ def test_create_third_tenant():
                                  json=data_tenant_group)
         print("Creating new Tenant Group....")
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant Group was sucessfully created!")
-        else:
-            print("Tenant Group creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant Group creation went wrong! Try again :(\n"+response.text)
+        print("Tenant Group was sucessfully created!")
     create_tenant_group()
 
 
@@ -130,9 +125,8 @@ def test_create_fourth_tenant():
                                  json=data_tenant_group)
         print("Creating new Tenant Group....")
         assert response.status_code == 201
-        if response.status_code == 201:
-            print("Tenant Group was sucessfully created!")
-        else:
-            print("Tenant Group creation went wrong! Try again :(")
-            print(response.text)
+        if response.status_code != 201:
+            raise Exception(
+                "Tenant Group creation went wrong! Try again :(\n"+response.text)
+        print("Tenant Group was sucessfully created!")
     create_tenant_group()

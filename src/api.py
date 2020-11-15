@@ -33,11 +33,10 @@ def create_tenant_group():
     response = requests.post(tenant_group_url, headers=headers,
                              json=data_tenant_group)
     print("Creating new Tenant Group....")
-    if response.status_code == 201:
-        print("Tenant Group was sucessfully created!")
-    else:
-        print("Tenant Group creation went wrong! Try again :(")
-        print(response.text)
+    if response.status_code != 201:
+        raise Exception(
+            "Tenant Group creation went wrong! Try again :(\n"+response.text)
+    print("Tenant Group was sucessfully created!")
 
 
 def create_tenant():
@@ -57,11 +56,10 @@ def create_tenant():
  # Send POST request to API
     print("Creating new Tenant....")
     response = requests.post(tenant_url, headers=headers, json=data_tenant)
-    if response.status_code == 201:
-        print("Tenant was sucessfully created!")
-    else:
-        print("Tenant creation went wrong! Try again :(")
-        print(response.text)
+    if response.status_code != 201:
+        raise Exception(
+            "Tenant creation went wrong! Try again :(\n"+response.text)
+    print("Tenant was sucessfully created!")
 
 
 def create_new_device():
@@ -100,11 +98,10 @@ def create_new_device():
     # Send POST request to API
     print("Creating new device....")
     response = requests.post(device_url, headers=headers, json=data)
-    if response.status_code == 201:
-        print("Device was sucessfully created!")
-    else:
-        print("New device creation went wrong! Try again :(")
-        print(response.text)
+    if response.status_code != 201:
+        raise Exception(
+            "New device creation went wrong! Try again :(\n"+response.text)
+    print("Device was sucessfully created!")
 
 
 def get_device_info():
@@ -113,42 +110,39 @@ def get_device_info():
     ip_number = []
     # Send GET request to API
     response = requests.get(param_url, headers=headers)
-    if response.status_code == 200:
-        json_data = response.json()
-        device_count = json_data['count']
-        results = json_data['results']
+    if response.status_code != 200:
+        raise Exception("Device info request went wrong! Try again :(")
+    json_data = response.json()
+    device_count = json_data['count']
+    results = json_data['results']
 
-        for each_device in range(0, device_count):
-            # getting device data from response
-            device_id = results[each_device]['id']
-            device_name = results[each_device]['name']
-            device_display_name = results[each_device]['device_type']['display_name']
-            device_status = results[each_device]['status']['value']
-            device_rack_name = results[each_device]['rack']['name']
-            device_primary_ip = results[each_device]['primary_ip']['address']
-            device_ipv4 = results[each_device]['primary_ip4']['address']
-            #device_ipv6 = results[each_device]['primary_ip6']
-            tenant = results[each_device]['tenant']['name']
+    for each_device in range(0, device_count):
+        # getting device data from response
+        device_id = results[each_device]['id']
+        device_name = results[each_device]['name']
+        device_display_name = results[each_device]['device_type']['display_name']
+        device_status = results[each_device]['status']['value']
+        device_rack_name = results[each_device]['rack']['name']
+        device_primary_ip = results[each_device]['primary_ip']['address']
+        device_ipv4 = results[each_device]['primary_ip4']['address']
+        tenant = results[each_device]['tenant']['name']
 
-            # Fulfilling the arrays with values
-            id_number.append(device_id)
-            # Deleting mask from IP address
-            device_ipv4_nomask = "/".join(device_ipv4.split("/")[:-1])
-            ip_number.append(device_ipv4_nomask)
+        # Fulfilling the arrays with values
+        id_number.append(device_id)
+        # Deleting mask from IP address
+        device_ipv4_nomask = "/".join(device_ipv4.split("/")[:-1])
+        ip_number.append(device_ipv4_nomask)
 
-            # Printing the device data
-            print("Device ID: " + str(device_id))
-            print("Device name: " + str(device_name))
-            print("Device display name: " + str(device_display_name))
-            print("Device status: " + str(device_status))
-            print("Tenant: " + str(tenant))
-            print("Rack: " + str(device_rack_name))
-            print("Device primary IP: "+str(device_primary_ip))
-            print("Device IPv4: " + str(device_ipv4))
-            print("===========================================")
-            #print("Device IPv4: " + str(device_ipv6))
-    else:
-        print("Device info request went wrong! Try again :(")
+        # Printing the device data
+        print("Device ID: " + str(device_id))
+        print("Device name: " + str(device_name))
+        print("Device display name: " + str(device_display_name))
+        print("Device status: " + str(device_status))
+        print("Tenant: " + str(tenant))
+        print("Rack: " + str(device_rack_name))
+        print("Device primary IP: "+str(device_primary_ip))
+        print("Device IPv4: " + str(device_ipv4))
+        print("===========================================")
 
     # Creating the dictionary with key = ID and value = IP
     device_dict = dict(zip(id_number, ip_number))
@@ -170,30 +164,30 @@ def get_device_sw_version():
         server_ip = hostname_list[each_hostname].format()
         # Checking if the equipment is reachable (with ping)
         rep = os.system('ping ' + server_ip)
-        if rep == 0:
-            print("Equipment is reachable! Performing the connection....")
-            # Setup a connection
-            ssh = paramiko.SSHClient()
-            # Fixing the problem with the known_hosts. Automatically add it
-            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            # Replace 'username', 'password' with actual values, if needed
-            ssh.connect(server_ip, port=22,
-                        username='demo', password='password', allow_agent=False)
-            # Executing the command on the equipment to observer the software version
-            stdin, stdout, stderr = ssh.exec_command('show version')
-            print("Successfully Connected!")
-            # Get and store the output
-            for line in stdout:
-                output = output+line
-            # Get the first string of the output
-            first_output_string = output.split('\n')[0]
-            # Locate and store the string value with version
-            software_version_value = ''.join(re.findall(
-                '\,\s*(Version.*)\,', first_output_string))
-            # Append the string value to sw_version list
-            sw_version.append(software_version_value)
-        else:
-            print("Equipment is unreachable! Can not setup the connection :(")
+        if rep != 0:
+            raise Exception(
+                "Equipment is unreachable! Can not setup the connection :(")
+        print("Equipment is reachable! Performing the connection....")
+        # Setup a connection
+        ssh = paramiko.SSHClient()
+        # Fixing the problem with the known_hosts. Automatically add it
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        # Replace 'username', 'password' with actual values, if needed
+        ssh.connect(server_ip, port=22,
+                    username='demo', password='password', allow_agent=False)
+        # Executing the command on the equipment to observer the software version
+        stdin, stdout, stderr = ssh.exec_command('show version')
+        print("Successfully Connected!")
+        # Get and store the output
+        for line in stdout:
+            output = output+line
+        # Get the first string of the output
+        first_output_string = output.split('\n')[0]
+        # Locate and store the string value with version
+        software_version_value = ''.join(re.findall(
+            '\,\s*(Version.*)\,', first_output_string))
+        # Append the string value to sw_version list
+        sw_version.append(software_version_value)
     # Update device_dict values with sw_version. Example {"id1":"Version 1.0","id2":"Version 2.0"}
     sw_output_dict = dict(zip(device_dict, sw_version))
     # Returning the new dictionary
@@ -216,11 +210,10 @@ def update_custom_field():
             data = json.dumps(payload)
             response = requests.patch(
                 new_device_url, headers=headers, data=data)
-            if response.status_code == 204:
-                print("The software version was successfully added to NetBox!")
-            else:
-                print("Something went wrong! Can not add software version!")
-                print(response.text)
+            if response.status_code != 204:
+                raise Exception(
+                    "Something went wrong! Can not add software version!\n"+response.text)
+            print("The software version was successfully added to NetBox!")
 
 
 # Uncomment if there is no NOC tenant group created on netboxdemo
@@ -231,7 +224,6 @@ def update_custom_field():
 
 # Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
 # create_new_device()
-
 # Getting device info, might be errors if no IP address assigned
 get_device_info()
 # SSH connection to the equipment

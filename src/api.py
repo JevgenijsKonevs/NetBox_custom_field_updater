@@ -19,6 +19,9 @@ headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Token 72830d67beff4ae178b94d8f781842408df8069d'
 }
+# Login credentials for device connection
+username = "evgeny"
+password = "cisco"
 
 
 def create_tenant_group():
@@ -65,7 +68,7 @@ def create_tenant():
 def create_new_device():
 
     data = {
-        "name": "test_device_52",
+        "name": "test_device_54",
         "device_type": 4,
         "device_role": {"name": "Core Switch"},
         "tenant": {"name": "NOC"},
@@ -168,16 +171,21 @@ def get_device_sw_version():
             raise Exception(
                 "Equipment is unreachable! Can not setup the connection :(")
         print("Equipment is reachable! Performing the connection....")
-        # Setup a connection
-        ssh = paramiko.SSHClient()
-        # Fixing the problem with the known_hosts. Automatically add it
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        # Replace 'username', 'password' with actual values, if needed
-        ssh.connect(server_ip, port=22,
-                    username='demo', password='password', allow_agent=False)
+        try:
+            # Setup a connection
+            ssh = paramiko.SSHClient()
+            # Fixing the problem with the known_hosts. Automatically add it
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            # Replace 'username', 'password' with actual values, if needed
+            ssh.connect(server_ip, port=22,
+                        username=username, password=password, allow_agent=False)
+        except paramiko.ssh_exception.NoValidConnectionsError as error:
+            print("Failed to connect to host '%s' with error: %s" % (error))
         # Executing the command on the equipment to observer the software version
         stdin, stdout, stderr = ssh.exec_command('show version')
         print("Successfully Connected!")
+        # Close ssh session
+        ssh.close()
         # Get and store the output
         for line in stdout:
             output = output+line
@@ -188,7 +196,7 @@ def get_device_sw_version():
             '\,\s*(Version.*)\,', first_output_string))
         # Append the string value to sw_version list
         sw_version.append(software_version_value)
-    # Update device_dict values with sw_version. Example {"id1":"Version 1.0","id2":"Version 2.0"}
+    # Update device_dict values with sw_version. Example {1:"Version 1.0",2:"Version 2.0"}
     sw_output_dict = dict(zip(device_dict, sw_version))
     # Returning the new dictionary
     return sw_output_dict

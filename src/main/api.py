@@ -187,6 +187,11 @@ def get_device_sw_version():
         # Executing the command on the equipment to observer the software version
         stdin, stdout, stderr = ssh.exec_command('show version')
         print("Successfully Connected!")
+        # if exec command is finished then close SSH connection
+        if stdout.channel.exit_status_ready():
+            if stdout.channel.recv_ready():
+                # Close ssh session
+                ssh.close()
         # Get and store the output
         for line in stdout:
             output = output + line
@@ -197,8 +202,6 @@ def get_device_sw_version():
             '\,\s*(Version.*)\,', first_output_string))
         # Append the string value to sw_version list
         sw_version.append(software_version_value)
-        # Close ssh session
-        ssh.close()
     # Update device_dict values with sw_version. Example {1:"Version 1.0",2:"Version 2.0"}
     sw_output_dict = dict(zip(device_dict, sw_version))
     # Returning the new dictionary
@@ -207,6 +210,7 @@ def get_device_sw_version():
 
 def update_custom_field():
     sw_output_dict = get_device_sw_version()
+    print(sw_output_dict)
     id_list = list(sw_output_dict.keys())
     version_list = list(sw_output_dict.values())
     payload = {
@@ -229,13 +233,13 @@ def update_custom_field():
 
 if __name__ == '__main__':
     # Uncomment if there is no NOC tenant group created on netboxdemo
-    create_tenant_group("NOC","noc")
+    #create_tenant_group("NOC","noc")
 
     # Uncomment if there is no NOC tenant created on netboxdemo
-    create_tenant()
+    #create_tenant()
 
     # Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
-    create_new_device()
+    #create_new_device()
     # Getting device info, might be errors if no IP address assigned
     get_device_info()
     # SSH connection to the equipment

@@ -58,15 +58,25 @@ def test_existing_device_exception():
 
 # get_device_info() tests
 def test_get_device_dict():
-    expected_dict = {44: "192.168.100.1", 38: "192.168.100.1", 39: "192.168.100.1", 49: "192.168.100.1"}
+    expected_dict = {44: "192.168.100.1", 38: "192.168.100.1", 39: "192.168.100.1"}
     actual_dict = api.get_device_info()
     assert expected_dict == actual_dict
 
 
 # get_device_sw_version tests
 def test_output_dict():
-    expected_dict = {44: "Version 12.4(6)T3", 38: "Version 12.4(6)T3", 39: "Version 12.4(6)T3", 49: "Version 12.4(6)T3"}
+    expected_dict = {44: "Version 12.4(6)T3", 38: "Version 12.4(6)T3", 39: "Version 12.4(6)T3"}
     actual_dict = api.get_device_sw_version()
     assert expected_dict == actual_dict
 
+
 # update_device_sw_version() tests
+def test_update_device_sw_status():
+    expected_status_code = 201
+    actual_status_code = api.update_custom_field()
+    assert expected_status_code == actual_status_code
+
+
+def test_update_device_exception():
+    with pytest.raises(Exception):
+        api.update_custom_field()

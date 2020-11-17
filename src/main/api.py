@@ -213,6 +213,7 @@ def update_custom_field():
     print(sw_output_dict)
     id_list = list(sw_output_dict.keys())
     version_list = list(sw_output_dict.values())
+    print(version_list)
     payload = {
         "custom_fields": {}
     }
@@ -229,20 +230,18 @@ def update_custom_field():
                 raise Exception(
                     "Something went wrong! Can not add software version!\n" + response.text)
             print("The software version was successfully added to NetBox!")
+    return response.status_code
 
 
 if __name__ == '__main__':
     # Uncomment if there is no NOC tenant group created on netboxdemo
-    #create_tenant_group("NOC","noc")
+    # create_tenant_group("NOC","noc")
 
     # Uncomment if there is no NOC tenant created on netboxdemo
-    #create_tenant()
+    # create_tenant("NOC","noc")
 
     # Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
-    #create_new_device()
-    # Getting device info, might be errors if no IP address assigned
-    get_device_info()
-    # SSH connection to the equipment
-    get_device_sw_version()
+    # create_new_device("test_device_52","Core Switch")
+
     # Updating the custom field on NetBox
     update_custom_field()

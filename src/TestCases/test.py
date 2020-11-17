@@ -72,7 +72,7 @@ def test_output_dict():
 
 # update_device_sw_version() tests
 def test_update_device_sw_status():
-    expected_status_code = 201
+    expected_status_code = 204
     actual_status_code = api.update_custom_field()
     assert expected_status_code == actual_status_code
 

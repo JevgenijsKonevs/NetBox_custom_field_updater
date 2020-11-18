@@ -43,7 +43,8 @@ It is important to mention that everything that you will create on https://netbo
 ####  Python Paramika module for SSH connection :</br>
 • https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73</br>
 • http://www.paramiko.org/</br>
-
+#### GNS3:</br>
+• Connect GNS3 to the Internet https://docs.gns3.com/docs/using-gns3/advanced/connect-gns3-internet</br>
 #### Pytest :</br>
 • https://docs.pytest.org/en/stable/</br>
 

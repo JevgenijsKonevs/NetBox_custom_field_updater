@@ -22,9 +22,9 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
 
 
 ### Description :
-The script was tested on https://netboxdemo.com as well as on manual NetBox setup.</br> In order to test the code for device SSH connection, GNS3 software was used, where the test lab was set up, using different types of equipment and GNS3 LoopBack</br>
+The script was tested on https://netboxdemo.com as well as on manual NetBox setup, using Oracle VirtualBox with Ubuntu.</br> In order to test the code for device SSH connection, GNS3 software was used, where the test lab was set up, using different types of equipment and GNS3 LoopBack</br>
 Example : </br>
-
+![Capture1](https://user-images.githubusercontent.com/55871427/99528968-bbaebb80-29a7-11eb-8d2f-cf3cd78c20ed.JPG)
 
 #### Netbox :</br>
 

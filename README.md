@@ -21,7 +21,9 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
 • Should pass pylint and black (optional)</br>
 
 
-### Useful info that I found :
+### Description :
+The script was tested on https://netboxdemo.com as well as on manual NetBox setup.</br> In order to test the code for device SSH connection, GNS3 software was used, where the test lab was set up, using different types of equipment and GNS3 LoopBack</br>
+Example : </br>
 
 
 #### Netbox :</br>

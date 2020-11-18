@@ -28,10 +28,11 @@ Simple example : </br>
 For tenant and tenant group creation as well as create new device, get information regarding other devices and updating the custom field,</br> NetBox API was used, especially, POST / GET / PATCH requests. </br>
 It is more conveniet to use PATCH request instead of PUT request, because PATCH request updates only necessary field.</br>
  
-In order to get the script working properly you should have complete manual setup of NetBox and then change funtion "create_new_device()" "data" fields </br>
+In order to get the script working properly you should have complete manual setup of NetBox and then change funtion "create_new_device()" "data" fields 
 or you can use https://netboxdemo.com , where all racks, sites, device roles and types are already setup. </br>
-It is important to mention that everything that you will create on https://netboxdemo.com will be cleared at 8:00 am UTC
+It is important to mention that everything that you will create on https://netboxdemo.com will be cleared at 8:00 am UTC</br>
 
+In addition, in order to run the pytests properly, you should change the input data as well such as "existing_tenant_group", "existing_tenant_slug", "existing_tenant", "existing_device_name", "device_role_list", "expected_dict"</br>
 
 ### Used sources :</br>
 #### Netbox :</br>

@@ -27,40 +27,24 @@ Simple example : </br>
 ![Capture1](https://user-images.githubusercontent.com/55871427/99528968-bbaebb80-29a7-11eb-8d2f-cf3cd78c20ed.JPG)</br>
 
 For tenant and tenant group creation as well as create new device, get information regarding other devices and updating the custom field,</br> NetBox API was used, especially, POST / GET / PATCH requests. </br>
-It is more convenietn to use PATCH request instead of PUT request, because PATCH request updates only necessary field.</br>
+It is more conveniet to use PATCH request instead of PUT request, because PATCH request updates only necessary field.</br>
+ 
+In order to get the script working properly you should have complete manual setup of NetBox and then change funtion "create_new_device()" "data" fields </br>
+or you can use https://netboxdemo.com , where all racks, sites, device roles and types are already setup. </br>
+It is important to mention that everything that you will create on https://netboxdemo.com will be cleared at 8:00 am UTC
 
 
-
+### Used sources :
 #### Netbox :</br>
-
-      • Netbox documentation https://netbox.readthedocs.io/en/stable/
-      • What is a netbox and how to use netboxdemo https://packetpushers.net/netbox-demo-site-netboxdemo-com/
-      • Netbox features https://youtu.be/X1BXS5N21TM
-      • Netbox review https://youtu.be/-pdTU_9wCAg
-      • Netbox API https://netboxdemo.com/api/docs/ (naybe to use in order to filter the devices by status and model. Look for "Device" )
-
-#### Python Paramika module for SSH connection :</br>
-
-      • Netboxdemo login and password : netbox,netbox
-#### Netbox API :</br>
-      • Netbox API documentation https://netboxdemo.com/api/docs/
-      • Probable API to use https://netboxdemo.com/api/dcim/devices/
-      • API access token '72830d67beff4ae178b94d8f781842408df8069d'
-      • Request Url with (Status = Active, Tenant = noc) https://netboxdemo.com/api/dcim/devices/?tenant=noc&status=active
-  ![API](https://user-images.githubusercontent.com/55871427/98450154-fbbda500-2142-11eb-88f8-6b7438432217.JPG)
-
+• Netbox documentation https://netbox.readthedocs.io/en/stable/
+• What is a netbox and how to use netboxdemo https://packetpushers.net/netbox-demo-site-netboxdemo-com/
+• Netbox features https://youtu.be/X1BXS5N21TM
+• Netbox setup https://computingforgeeks.com/how-to-install-netbox-on-ubuntu-18-04-lts/
       
 ####  Python Paramika module for SSH connection :</br>
-      • https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73
-      • http://www.paramiko.org/
-      • https://www.youtube.com/watch?v=kvPa85M9z2Q&ab_channel=TheIPSchool
-
-#### Python for Telnet connection :</br>
-
-      • https://youtu.be/IhroIrV9_7w
-      • https://docs.python.org/3.1/library/telnetlib.html
+• https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73
+• http://www.paramiko.org/
 
 #### Pytest :</br>
-
-      • https://docs.pytest.org/en/stable/
+• https://docs.pytest.org/en/stable/
 

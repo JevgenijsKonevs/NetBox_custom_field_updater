@@ -7,13 +7,13 @@ import re
 # API url
 api_url = 'https://netboxdemo.com/api/'
 # Tenant Group url
-tenant_group_url = api_url+"tenancy/tenant-groups/"
+tenant_group_url = api_url + "tenancy/tenant-groups/"
 # Tenant url
-tenant_url = api_url+"tenancy/tenants/"
+tenant_url = api_url + "tenancy/tenants/"
 # Device url
 device_url = 'https://netboxdemo.com/api/dcim/devices/'
 # Status = Active, Tenant = NOC url
-param_url = api_url+"dcim/devices/?tenant=noc&status=active"
+param_url = api_url + "dcim/devices/?tenant=noc&status=active"
 # Authorization header
 headers = {
     'Content-Type': 'application/json',
@@ -24,29 +24,30 @@ username = "evgeny"
 password = "cisco"
 
 
-def create_tenant_group():
+def create_tenant_group(name, slug):
     # Create Tenant Group NOC
-
     data_tenant_group = {
-        "name": "NOC",
-        "slug": "noc",
+        "name": name,
+        "slug": slug,
         "parent": None,
-        "description": "NOC"
+        "description": ""
     }
     response = requests.post(tenant_group_url, headers=headers,
                              json=data_tenant_group)
     print("Creating new Tenant Group....")
     if response.status_code != 201:
         raise Exception(
-            "Tenant Group creation went wrong! Try again :(\n"+response.text)
-    print("Tenant Group was sucessfully created!")
+            "Tenant Group creation went wrong! Try again :(\n" + response.text)
+    print("Tenant Group was successfully created!")
+    return response.status_code
 
 
-def create_tenant():
+def create_tenant(name, slug):
+
     # Create Tenant NOC
     data_tenant = {
-        "name": "NOC",
-        "slug": "noc",
+        "name": name,
+        "slug": slug,
         "group": {"name": "NOC"},
         "description": "NOC",
         "comments": "",
@@ -56,21 +57,22 @@ def create_tenant():
         "custom_fields": {
         }
     }
- # Send POST request to API
+    # Send POST request to API
     print("Creating new Tenant....")
     response = requests.post(tenant_url, headers=headers, json=data_tenant)
     if response.status_code != 201:
         raise Exception(
-            "Tenant creation went wrong! Try again :(\n"+response.text)
-    print("Tenant was sucessfully created!")
+            "Tenant creation went wrong! Try again :(\n" + response.text)
+    print("Tenant was successfully created!")
+    return response.status_code
 
 
-def create_new_device():
+def create_new_device(name, role):
 
     data = {
-        "name": "test_device_54",
+        "name": name,
         "device_type": 4,
-        "device_role": {"name": "Core Switch"},
+        "device_role": {"name": role},
         "tenant": {"name": "NOC"},
         "platform": 2,
         "serial": "",
@@ -103,8 +105,9 @@ def create_new_device():
     response = requests.post(device_url, headers=headers, json=data)
     if response.status_code != 201:
         raise Exception(
-            "New device creation went wrong! Try again :(\n"+response.text)
-    print("Device was sucessfully created!")
+            "New device creation went wrong! Try again :(\n" + response.text)
+    print("Device was successfully created!")
+    return response.status_code
 
 
 def get_device_info():
@@ -143,7 +146,7 @@ def get_device_info():
         print("Device status: " + str(device_status))
         print("Tenant: " + str(tenant))
         print("Rack: " + str(device_rack_name))
-        print("Device primary IP: "+str(device_primary_ip))
+        print("Device primary IP: " + str(device_primary_ip))
         print("Device IPv4: " + str(device_ipv4))
         print("===========================================")
 
@@ -184,11 +187,14 @@ def get_device_sw_version():
         # Executing the command on the equipment to observer the software version
         stdin, stdout, stderr = ssh.exec_command('show version')
         print("Successfully Connected!")
-        # Close ssh session
-        ssh.close()
+        # if exec command is finished then close SSH connection
+        if stdout.channel.exit_status_ready():
+            if stdout.channel.recv_ready():
+                # Close ssh session
+                ssh.close()
         # Get and store the output
         for line in stdout:
-            output = output+line
+            output = output + line
         # Get the first string of the output
         first_output_string = output.split('\n')[0]
         # Locate and store the string value with version
@@ -204,13 +210,14 @@ def get_device_sw_version():
 
 def update_custom_field():
     sw_output_dict = get_device_sw_version()
+    print(sw_output_dict)
     id_list = list(sw_output_dict.keys())
     version_list = list(sw_output_dict.values())
     payload = {
         "custom_fields": {}
     }
     for each_id in range(0, len(id_list)):
-        new_device_url = device_url + str(id_list[each_id])+'/'
+        new_device_url = device_url + str(id_list[each_id]) + '/'
         for each_version in range(0, len(version_list)):
             payload = {
                 "custom_fields": {"sw_version": str(version_list[each_version])}
@@ -218,23 +225,24 @@ def update_custom_field():
             data = json.dumps(payload)
             response = requests.patch(
                 new_device_url, headers=headers, data=data)
-            if response.status_code != 204:
+            if response.status_code != 200:
                 raise Exception(
-                    "Something went wrong! Can not add software version!\n"+response.text)
+                    "Something went wrong! Can not add software version!\n" + response.text)
             print("The software version was successfully added to NetBox!")
 
 
-# Uncomment if there is no NOC tenant group created on netboxdemo
-# create_tenant_group()
+if __name__ == '__main__':
+    # Uncomment if there is no NOC tenant group created on netboxdemo
+    # create_tenant_group("NOC","noc")
 
-# Uncomment if there is no NOC tenant created on netboxdemo
-# create_tenant()
+    # Uncomment if there is no NOC tenant created on netboxdemo
+    # create_tenant("NOC","noc")
 
-# Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
-# create_new_device()
-# Getting device info, might be errors if no IP address assigned
-get_device_info()
-# SSH connection to the equipment
-get_device_sw_version()
-# Updating the custom field on NetBox
-update_custom_field()
+    # Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
+    # create_new_device("some_name")
+    # Getting device info, might be errors if no IP address assigned
+    # get_device_info()
+    # SSH connection to the equipment
+    # get_device_sw_version()
+    # Updating the custom field on NetBox
+    update_custom_field()

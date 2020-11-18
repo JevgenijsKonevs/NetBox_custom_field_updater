@@ -5,21 +5,24 @@ import os
 import re
 
 # API url
+# Replace with your own NetBox url
 api_url = 'https://netboxdemo.com/api/'
 # Tenant Group url
 tenant_group_url = api_url + "tenancy/tenant-groups/"
 # Tenant url
 tenant_url = api_url + "tenancy/tenants/"
 # Device url
-device_url = 'https://netboxdemo.com/api/dcim/devices/'
+device_url = api_url+"dcim/devices/"
 # Status = Active, Tenant = NOC url
 param_url = api_url + "dcim/devices/?tenant=noc&status=active"
 # Authorization header
+# Replace Token with your own NetBox access token
 headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Token 72830d67beff4ae178b94d8f781842408df8069d'
 }
 # Login credentials for device connection
+# Replace with your own credentials
 username = "evgeny"
 password = "cisco"
 
@@ -68,7 +71,7 @@ def create_tenant(name, slug):
 
 
 def create_new_device(name, role):
-
+    # Create new device on NetBox
     data = {
         "name": name,
         "device_type": 4,
@@ -172,7 +175,7 @@ def get_device_sw_version():
         rep = os.system('ping ' + server_ip)
         if rep != 0:
             raise Exception(
-                "Equipment is unreachable! Can not setup the connection :(")
+                "Equipment "+server_ip+" is unreachable! Can not setup the connection :(")
         print("Equipment is reachable! Performing the connection....")
         try:
             # Setup a connection
@@ -213,9 +216,6 @@ def update_custom_field():
     print(sw_output_dict)
     id_list = list(sw_output_dict.keys())
     version_list = list(sw_output_dict.values())
-    payload = {
-        "custom_fields": {}
-    }
     for each_id in range(0, len(id_list)):
         new_device_url = device_url + str(id_list[each_id]) + '/'
         for each_version in range(0, len(version_list)):
@@ -228,7 +228,7 @@ def update_custom_field():
             if response.status_code != 200:
                 raise Exception(
                     "Something went wrong! Can not add software version!\n" + response.text)
-            print("The software version was successfully added to NetBox!")
+        print("The software version was successfully added to NetBox!")
 
 
 if __name__ == '__main__':
@@ -238,11 +238,14 @@ if __name__ == '__main__':
     # Uncomment if there is no NOC tenant created on netboxdemo
     # create_tenant("NOC","noc")
 
-    # Uncomment to create new device. Field "name" and "primary_ip4" should be edited before running
-    # create_new_device("some_name")
-    # Getting device info, might be errors if no IP address assigned
+    # Uncomment to create new device. Field "primary_ip" should be edited on Netbox afterwards
+    # create_new_device("device_name", "device_role")
+
+    # Getting device info, will error if no primary IP address assigned to the device
     # get_device_info()
+
     # SSH connection to the equipment
     # get_device_sw_version()
-    # Updating the custom field on NetBox
+
+    # Main function. Updating the custom field on NetBox
     update_custom_field()

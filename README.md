@@ -34,17 +34,17 @@ or you can use https://netboxdemo.com , where all racks, sites, device roles and
 It is important to mention that everything that you will create on https://netboxdemo.com will be cleared at 8:00 am UTC
 
 
-### Used sources :
+### Used sources :</br>
 #### Netbox :</br>
-• Netbox documentation https://netbox.readthedocs.io/en/stable/
-• What is a netbox and how to use netboxdemo https://packetpushers.net/netbox-demo-site-netboxdemo-com/
-• Netbox features https://youtu.be/X1BXS5N21TM
-• Netbox setup https://computingforgeeks.com/how-to-install-netbox-on-ubuntu-18-04-lts/
+• Netbox documentation https://netbox.readthedocs.io/en/stable/</br>
+• What is a netbox and how to use netboxdemo https://packetpushers.net/netbox-demo-site-netboxdemo-com/</br>
+• Netbox features https://youtu.be/X1BXS5N21TM</br>
+• Netbox setup https://computingforgeeks.com/how-to-install-netbox-on-ubuntu-18-04-lts/</br>
       
 ####  Python Paramika module for SSH connection :</br>
-• https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73
-• http://www.paramiko.org/
+• https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73</br>
+• http://www.paramiko.org/</br>
 
 #### Pytest :</br>
-• https://docs.pytest.org/en/stable/
+• https://docs.pytest.org/en/stable/</br>
 

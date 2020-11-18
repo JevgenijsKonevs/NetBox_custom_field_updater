@@ -31,6 +31,10 @@ It is more conveniet to use PATCH request instead of PUT request, because PATCH 
 In order to get the script working properly you should have complete manual setup of NetBox and then change funtion "create_new_device()" "data" fields 
 or you can use https://netboxdemo.com , where all racks, sites, device roles and types are already set up. </br> Also, if you are using localy installed NetBox, then you should change API url in apy.py as well as Authorization Token value. Token value can be found on your NetBox account. </br>
 Example : </br>
+![Capture1](https://user-images.githubusercontent.com/55871427/99532732-6ecde380-29ad-11eb-8197-6bbf028e43f4.JPG)</br>
+Do not forget to change login credentials for device connection in api.py!</br>
+![Capture2](https://user-images.githubusercontent.com/55871427/99532828-97ee7400-29ad-11eb-8e4b-424ad477d916.JPG)</br>
+
 It is important to mention that everything that you will create on https://netboxdemo.com will be cleared at 8:00 am UTC</br>
 
 In addition, in order to run the pytests properly, you should change the input data as well such as "existing_tenant_group", "existing_tenant_slug", "existing_tenant", "existing_device_name", "device_role_list", "expected_dict"</br>

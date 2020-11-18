@@ -21,7 +21,7 @@ Assume network device list would contain Cisco Catalyst IOS, Cisco Nexus OS, Cis
 
 
 ### Description :
-The script was tested on https://netboxdemo.com as well as on manual NetBox setup, using Oracle VirtualBox with Ubuntu.</br> In order to test the code for device SSH connection, GNS3 software was used, where the test lab was set up, using different types of equipment and GNS3 LoopBack</br>
+The script was tested on https://netboxdemo.com as well as on manual NetBox setup, using Oracle VirtualBox with Ubuntu.</br> Use username: netbox password: netbox to connect.</br> In order to test the code for device SSH connection, GNS3 software was used, where the test lab was set up, using different types of equipment and GNS3 LoopBack</br>
 Simple example : </br>
 ![Capture1](https://user-images.githubusercontent.com/55871427/99528968-bbaebb80-29a7-11eb-8d2f-cf3cd78c20ed.JPG)</br>
 
@@ -29,7 +29,8 @@ For tenant and tenant group creation as well as create new device, get informati
 It is more conveniet to use PATCH request instead of PUT request, because PATCH request updates only necessary field.</br>
  
 In order to get the script working properly you should have complete manual setup of NetBox and then change funtion "create_new_device()" "data" fields 
-or you can use https://netboxdemo.com , where all racks, sites, device roles and types are already setup. </br>
+or you can use https://netboxdemo.com , where all racks, sites, device roles and types are already set up. </br> Also, if you are using localy installed NetBox, then you should change API url in apy.py as well as Authorization Token value. Token value can be found on your NetBox account. </br>
+Example : </br>
 It is important to mention that everything that you will create on https://netboxdemo.com will be cleared at 8:00 am UTC</br>
 
 In addition, in order to run the pytests properly, you should change the input data as well such as "existing_tenant_group", "existing_tenant_slug", "existing_tenant", "existing_device_name", "device_role_list", "expected_dict"</br>

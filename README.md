@@ -45,7 +45,7 @@ In addition, in order to run the pytests properly, you should change the input d
 • Netbox features https://youtu.be/X1BXS5N21TM</br>
 • Netbox setup https://computingforgeeks.com/how-to-install-netbox-on-ubuntu-18-04-lts/</br>
       
-####  Python Paramika module for SSH connection :</br>
+####  Python Paramiko module for SSH connection :</br>
 • https://medium.com/@keagileageek/paramiko-how-to-ssh-and-file-transfers-with-python-75766179de73</br>
 • http://www.paramiko.org/</br>
 #### GNS3:</br>
